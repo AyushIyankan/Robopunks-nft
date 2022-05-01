@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
 
-import '@openzepplin/contracts/token/ERC721/ERC721.sol';
-import '@openzepplin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
 
 contract Robopunk is ERC721, Ownable {
     uint256 public mintPrice;
@@ -18,22 +18,21 @@ contract Robopunk is ERC721, Ownable {
         mintPrice = 0.02 ether;
         totalSupply = 0;
         maxSupply = 1000;
-        maxperWallet = 3;
+        maxPerWallet = 3;
         // withdrawWallet = 
-
     }
 
-    function isPublicMintEnabled(bool isPublicMintEnabled_) external onlyOwner {
+    function setPublicMintEnabled(bool isPublicMintEnabled_) external onlyOwner {
         isPublicMintEnabled = isPublicMintEnabled_;
     }
 
-    function setBaseTokenUrl(string calldata baseTokenUrl_) external onlyOwner {
-        baseTokenUrl = baseTokenUrl_;
+    function setBaseTokenUri(string calldata baseTokenUri_) external onlyOwner {
+        baseTokenUri = baseTokenUri_;
     }
 
-    function tokenURI(uint256 tokenId) public view returns (string memory) {
+    function tokenURI(uint256 tokenId_) public view override returns (string memory) {
         require(_exists(tokenId_), 'Token does not exist!');
-        return string(abi.encodePacked(baseTokenUri, String.toString(tokenId_), ".json"));
+        return string(abi.encodePacked(baseTokenUri, Strings.toString(tokenId_), ".json"));
     }
 
     function witdraw() external onlyOwner {
